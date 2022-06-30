@@ -13,15 +13,10 @@ const resolvers = {
                 return userData;
             }
             throw new AuthenticationError("you're not logged in.");
-        },
-        users: async() => {
-            return User.find();
-        } 
+        }
     },
 
     Mutation: {
-        //LOGIN_USER
-        //ADD_USER
         //SAVE_BOOK
         //REMOVE_BOOK
         addUser: async (parent, args) => {
@@ -46,17 +41,28 @@ const resolvers = {
             const token = signToken(user);
             return { token, user };
         },
-        // addBook: async (parent, { bookData }, context) => {
-        //     if (context.user) {
-        //         const updatedBookList = await User.findByIdAndUpdate(
-        //             { _id: context.user._id },
-        //             { $push: { books: bookData } },
-        //             { new: true }
-        //         );
-        //         return updatedBookList;
-        //     }
-        //     throw new AuthenticationError("you're not logged in.");
-        // }
+        addBook: async (parent, { bookData }, context) => {
+            if (context.user) {
+                const updatedBookList = await User.findByIdAndUpdate(
+                    { _id: context.user._id },
+                    { $push: { books: bookData } },
+                    { new: true }
+                );
+                return updatedBookList;
+            }
+            throw new AuthenticationError("you're not logged in.");
+        },
+        removeBook: async (parent, { bookId }, context) => {
+            if (context.user) {
+                const updatedBookList = await User.findByIdAndUpdate(
+                    { _id: context.user._id },
+                    { $pull: { books: bookId } },
+                    { new: true }
+                );
+                return updatedBookList;
+            }
+            throw new AuthenticationError("you're not logged in.");
+        }
     }
 };
 
