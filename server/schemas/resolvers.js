@@ -47,19 +47,18 @@ const resolvers = {
                 );
                 return updatedUser;
             } 
-            console.log(parent);
-            // throw new AuthenticationError("you need to log in to save a book.");
+            throw new AuthenticationError("you need to log in to save a book.");
         },
         removeBook: async (parent, { bookId }, context) => {
             if (context.user) {
-                const updatedBookList = await User.findByIdAndUpdate(
+                const updatedUser = await User.findByIdAndUpdate(
                     { _id: context.user._id },
                     { $pull: { savedBooks: bookId } },
                     { new: true }
                 );
-                return updatedBookList;
+                return updatedUser;
             }
-            throw new AuthenticationError("you're not logged in.");
+            // throw new AuthenticationError("you're not logged in.");
         }
     }
 };
