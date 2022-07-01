@@ -23,7 +23,7 @@ const SavedBooks = () => {
 
     try {
       await removeBook({ 
-        variables: { bookId },
+        variables: { bookId } 
       });
       removeBookId(bookId);
     } catch (err) {
